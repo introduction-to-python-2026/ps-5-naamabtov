@@ -1,7 +1,7 @@
 
 
 
-def split_before_uppercases(formula):
+def  split_by_capitals(formula):
     
     start = 0
     split_formula = []
@@ -17,7 +17,7 @@ def split_before_uppercases(formula):
     return split_formula
 
 
-    def split_at_first_digit(formula):
+    def split_at_number(formula):
     digit_location=1
     for i in formula[1:]:
       if i.isdigit():
