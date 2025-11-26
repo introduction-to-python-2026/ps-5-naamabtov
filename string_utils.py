@@ -1,55 +1,38 @@
-
-
-
-def  split_by_capitals(formula):
-    
-    start = 0
-    split_formula = []
-    if not formula:
-        return []
-
-    for i in range(1, len(formula)):
-        if formula[i].isupper():
-            split_formula.append(formula[start:i])
-            start = i
-
-    split_formula.append(formula[start:])
+def split_before_uppercases(formula):
+    split_formula=[]
+    start_sub=0
+    if formula== "":
+      return split_formula
+    for i  in range(1,len(formula)):
+      if formula[i].isupper():
+        split_formula.append(formula[start_sub:i])
+        start_sub=i
+    split_formula.append(formula[start_sub:len(formula)])
     return split_formula
 
 
-    def split_at_number(formula):
-    digit_location=1
-    for i in formula[1:]:
-      if i.isdigit():
-        break 
-      digit_location +=1
+def split_at_digit(formula):
+    digit_location = 1
+    while digit_location <=len(formula)-1 :
+        if formula[digit_location].isdigit() :
+            break
+        digit_location += 1
+    if digit_location > len(formula)-1 :
+        return (formula,1)
+    return (formula[0:digit_location],int(formula[digit_location:len(formula)]))
 
-    if digit_location == len(formula):
-       return formula, 1
-    else:
-       return formula[:digit_location], int(formula[digit_location:])
 
 def count_atoms_in_molecule(molecular_formula):
-    """Takes a molecular formula (string) and returns a dictionary of atom counts.  
-    Example: 'H2O' → {'H': 2, 'O': 1}"""
-
-    # Step 1: Initialize an empty dictionary to store atom counts
-    dic={}
-
-    for atom in split_by_capitals(molecular_formula):
-        atom_name, atom_count = split_at_number(atom)
-        
-        # Step 2: Update the dictionary with the atom name and count
-         dic[atom_name]= atom count
-
-    # Step 3: Return the completed dictionary
-     return dic
-
+    count = {}
+    split_formula=split_before_uppercases(molecular_formula)
+    for element in split_formula:
+        split_element=split_at_digit(element)
+        count[split_element[0]]=split_element[1]
+    return count
 
 
 def parse_chemical_reaction(reaction_equation):
-    """Takes a reaction equation (string) and returns reactants and products as lists.  
-    Example: 'H2 + O2 -> H2O' → (['H2', 'O2'], ['H2O'])"""
+
     reaction_equation = reaction_equation.replace(" ", "")  # Remove spaces for easier parsing
     reactants, products = reaction_equation.split("->")
     return reactants.split("+"), products.split("+")
